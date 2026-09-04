@@ -1,0 +1,38 @@
+{
+  "name": "Azure + Terraform Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+
+  // Run as the non-root user that ships with the base image.
+  "remoteUser": "vscode",
+
+  // Confirm the toolchain is available once the container is created.
+  "postCreateCommand": "az version && terraform -version && tflint --version && git --version",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Official HashiCorp Terraform extension (language server, fmt, etc.)
+        "hashicorp.terraform",
+        // Modern Azure Resources extension (replaces the deprecated
+        // `ms-vscode.azure-account` / `ms-azuretools.vscode-azureaccount`).
+        "ms-azuretools.vscode-azureresourcegroups"
+      ],
+      "settings": {
+        "[terraform]": {
+          "editor.defaultFormatter": "hashicorp.terraform",
+          "editor.formatOnSave": true,
+          "editor.formatOnSaveMode": "file"
+        },
+        "[terraform-vars]": {
+          "editor.defaultFormatter": "hashicorp.terraform",
+          "editor.formatOnSave": true,
+          "editor.formatOnSaveMode": "file"
+        },
+        "terraform.experimentalFeatures.prefillRequiredFields": true,
+        "terraform.codelens.referenceCount": true
+      }
+    }
+  }
+}
